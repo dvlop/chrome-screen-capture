@@ -392,6 +392,7 @@ var page = {
     var element = event.target;
     if (element && page.isMouseDown) {
       var areaElement = $('sc_drag_area');
+      var lowest;
       if (areaElement) {
         var xPosition = event.pageX;
         var yPosition = event.pageY;
@@ -416,9 +417,11 @@ var page = {
           if (page.startY > page.endY) {
             height = page.startY - page.endY;
             areaElement.style.top = page.endY + 'px';
+            lowest = page.startY;
           } else {
             height = page.endY - page.startY;
             areaElement.style.top = page.startY + 'px';
+            lowest = page.endY;
           }
           areaElement.style.height = height + 'px';
           areaElement.style.width  = width + 'px';
@@ -452,11 +455,12 @@ var page = {
           page.startX = newXPosition;
           page.endY = newYPosition + areaElement.clientHeight;
           page.startY = newYPosition;
+          lowest = page.endY;
 
         }
         var crop = document.getElementById('sc_drag_crop');
           var cancel = document.getElementById('sc_drag_cancel');
-          if (event.pageY + 25 > document.height) {
+          if (lowest + 25 > document.height) {
             crop.style.bottom = 0;
             cancel.style.bottom = 0
           } else {
